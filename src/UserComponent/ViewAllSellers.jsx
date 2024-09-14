@@ -25,7 +25,7 @@ const ViewAllSellers = () => {
 
   const retrieveAllUser = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/user/fetch/role-wise?role=Seller",
+      "http://54.90.239.187:8080/api/user/fetch/role-wise?role=Seller",
       {
         headers: {
           Authorization: "Bearer " + admin_jwtToken, // Replace with your actual JWT token
@@ -37,7 +37,7 @@ const ViewAllSellers = () => {
   };
 
   const deleteSeller = (userId, e) => {
-    fetch("http://localhost:8080/api/user/delete/seller?sellerId=" + userId, {
+    fetch("http://54.90.239.187:8080/api/user/delete/seller?sellerId=" + userId, {
       method: "DELETE",
       headers: {
         Accept: "application/json",

@@ -30,7 +30,7 @@ const Product = () => {
 
   const retrieveProduct = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/product/fetch?productId=" + productId
+      "http://54.90.239.187:8080/api/product/fetch?productId=" + productId
     );
 
     return response.data;
@@ -38,7 +38,7 @@ const Product = () => {
 
   const retrieveCustomer = async (customerId) => {
     const response = await axios.get(
-      "http://localhost:8080/api/user/fetch/user-id?userId=" + customerId
+      "http://54.90.239.187:8080/api/user/fetch/user-id?userId=" + customerId
     );
 
     return response.data;
@@ -75,7 +75,7 @@ const Product = () => {
 
   const retrieveProductsByCategory = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/product/fetch/category-wise?categoryId=" +
+      "http://54.90.239.187:8080/api/product/fetch/category-wise?categoryId=" +
         categoryId
     );
     console.log(response.data);
@@ -83,7 +83,7 @@ const Product = () => {
   };
 
   const saveProductOffer = (amount, e) => {
-    fetch("http://localhost:8080/api/product/offer/add", {
+    fetch("http://54.90.239.187:8080/api/product/offer/add", {
       method: "POST",
       headers: {
         Accept: "application/json",

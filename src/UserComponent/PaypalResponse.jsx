@@ -22,7 +22,7 @@ const PaypalResponse = () => {
   console.log(token);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/user/execute/payment", {
+    fetch("http://54.90.239.187:8080/api/user/execute/payment", {
       method: "POST",
       headers: {
         Accept: "application/json",

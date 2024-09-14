@@ -20,7 +20,7 @@ const ViewAllCustomers = () => {
 
   const retrieveAllUser = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/user/fetch/role-wise?role=Customer",
+      "http://54.90.239.187:8080/api/user/fetch/role-wise?role=Customer",
       {
         headers: {
           Authorization: "Bearer " + admin_jwtToken, // Replace with your actual JWT token

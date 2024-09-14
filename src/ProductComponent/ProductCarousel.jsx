@@ -30,7 +30,7 @@ const ProductCarousel = (product) => {
       <div className="carousel-inner">
         <div className="carousel-item active">
           <img
-            src={"http://localhost:8080/api/product/" + product.item.image1}
+            src={"http://54.90.239.187:8080/api/product/" + product.item.image1}
             className="d-block card-img-top img-fluid"
             alt="..."
             style={{
@@ -42,7 +42,7 @@ const ProductCarousel = (product) => {
         </div>
         <div className="carousel-item">
           <img
-            src={"http://localhost:8080/api/product/" + product.item.image2}
+            src={"http://54.90.239.187:8080/api/product/" + product.item.image2}
             className="d-block card-img-top img-fluid"
             alt="..."
             style={{
@@ -54,7 +54,7 @@ const ProductCarousel = (product) => {
         </div>
         <div className="carousel-item">
           <img
-            src={"http://localhost:8080/api/product/" + product.item.image3}
+            src={"http://54.90.239.187:8080/api/product/" + product.item.image3}
             className="d-block card-img-top img-fluid"
             alt="..."
             style={{

@@ -24,7 +24,7 @@ const AddCardDetails = () => {
 
   const payForOrder = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8080/api/order/add?userId=" + user.id, {
+    fetch("http://54.90.239.187:8080/api/order/add?userId=" + user.id, {
       method: "POST",
       headers: {
         Accept: "application/json",

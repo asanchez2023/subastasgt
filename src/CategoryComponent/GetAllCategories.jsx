@@ -7,7 +7,7 @@ const GetAllCategories = () => {
 
   const retrieveAllCategories = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/category/fetch/all?start=0&count=12"
+      "http://54.90.239.187:8080/api/category/fetch/all?start=0&count=12"
     );
     return response.data;
   };

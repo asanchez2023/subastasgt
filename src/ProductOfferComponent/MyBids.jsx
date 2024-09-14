@@ -23,14 +23,14 @@ const MyBids = () => {
 
   const retrieveMyOffers = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/product/offer/fetch/user?userId=" + user.id
+      "http://54.90.239.187:8080/api/product/offer/fetch/user?userId=" + user.id
     );
     console.log(response.data);
     return response.data;
   };
 
   const deleteProductOffer = (offerId, e) => {
-    fetch("http://localhost:8080/api/product/offer/id?offerId=" + offerId, {
+    fetch("http://54.90.239.187:8080/api/product/offer/id?offerId=" + offerId, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -136,7 +136,7 @@ const MyBids = () => {
                       <td>
                         <img
                           src={
-                            "http://localhost:8080/api/product/" +
+                            "http://54.90.239.187:8080/api/product/" +
                             myOffer.product.image1
                           }
                           class="img-fluid"
