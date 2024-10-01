@@ -27,7 +27,7 @@ const ProductCard = (product) => {
 
         <div class="card-body text-color">
           <h5>
-            Category:{" "}
+            Categoría:{" "}
             <CategoryNavigator
               item={{
                 id: product.item.category.id,
