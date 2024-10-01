@@ -56,7 +56,7 @@ const ProductCard = (product) => {
             <div className="text-color">
               <p>
                 <span>
-                  <h4>Price : Q{product.item.price}</h4>
+                  <h4>Precio : Q{product.item.price}</h4>
                 </span>
               </p>
             </div>
