@@ -3,8 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const ProductOffers = () => {
-  const [offers, setOffers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [offers, setoffers] = useState([]);
 
   const admin = JSON.parse(sessionStorage.getItem("active-admin"));
 
@@ -18,24 +17,15 @@ const ProductOffers = () => {
     return response.data;
   };
 
-  const getAllOffers = async () => {
-    setLoading(true);
-    const alloffers = await retrieveAllOffers();
-    if (alloffers) {
-      setOffers(alloffers.offers);
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
-    getAllOffers();
-    const intervalId = setInterval(() => {
-      getAllOffers();
-    }, 10000); // Actualiza cada 5 segundos
-
-    return () => {
-      clearInterval(intervalId);
+    const getAllOffers = async () => {
+      const alloffers = await retrieveAllOffers();
+      if (alloffers) {
+        setoffers(alloffers.offers);
+      }
     };
+
+    getAllOffers();
   }, []);
 
   return (
@@ -53,34 +43,30 @@ const ProductOffers = () => {
           overflowY: "auto",
         }}
       >
-        {loading ? (
-          <p>Cargando...</p>
-        ) : (
-          offers.map((offer) => {
-            return (
-              <div class="list-group-item list-group-item-action text-color custom-bg">
-                <b className="text-color1">
-                  {(() => {
-                    if (offer.product.status === "Sold") {
-                      if (offer.status === "Won") {
-                        return (
-                          <div>
-                            {admin
-                              ? offer.user.firstName + " " + offer.user.lastName
-                              : "Anonymous User"}{" "}
-                            <span className="text-success">[WON]</span>
-                          </div>
-                        );
-                      }
+        {offers.map((offer) => {
+          return (
+            <div class="list-group-item list-group-item-action text-color custom-bg">
+              <b className="text-color1">
+                {(() => {
+                  if (offer.product.status === "Sold") {
+                    if (offer.status === "Won") {
+                      return (
+                        <div>
+                          {admin
+                            ? offer.user.firstName + " " + offer.user.lastName
+                            : "Anonymous User"}{" "}
+                          <span className="text-success">[WON]</span>
+                        </div>
+                      );
                     }
-                    return <div>Usuario Anónimo</div>;
-                  })()}
-                </b>
-                <p> Q{offer.amount}</p>
-              </div>
-            );
-          })
-        )}
+                  }
+                  return <div>Usuario Anónimo</div>;
+                })()}
+              </b>
+              <p> Q{offer.amount}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
