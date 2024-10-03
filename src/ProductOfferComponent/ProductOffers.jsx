@@ -36,7 +36,7 @@ const ProductOffers = () => {
       }}
     >
       <div class="list-group-item list-group-item-action bg-color custom-bg-text text-center">
-        <b>Product Bids</b>
+        <b>Ofertas de producto</b>
       </div>
       <div
         style={{
