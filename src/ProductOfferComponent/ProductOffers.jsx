@@ -11,7 +11,7 @@ const ProductOffers = () => {
 
   const retrieveAllOffers = async () => {
     const response = await axios.get(
-      "http://54.90.239.187:8080/api/product/offer/fetch/product?productId=" +
+      "http://3.234.108.139:8080/api/product/offer/fetch/product?productId=" +
         productId
     );
     return response.data;

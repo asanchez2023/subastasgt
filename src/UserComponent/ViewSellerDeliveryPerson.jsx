@@ -25,7 +25,7 @@ const ViewSellerDeliveryPerson = () => {
 
   const retrieveAllUser = async () => {
     const response = await axios.get(
-      "http://54.90.239.187:8080/api/user/fetch/seller/delivery-person?sellerId=" +
+      "http://3.234.108.139:8080/api/user/fetch/seller/delivery-person?sellerId=" +
         seller.id,
       {
         headers: {
@@ -39,7 +39,7 @@ const ViewSellerDeliveryPerson = () => {
 
   const deleteDelivery = (userId, e) => {
     fetch(
-      "http://54.90.239.187:8080/api/user/delete/seller/delivery-person?deliveryId=" +
+      "http://3.234.108.139:8080/api/user/delete/seller/delivery-person?deliveryId=" +
         userId,
       {
         method: "DELETE",

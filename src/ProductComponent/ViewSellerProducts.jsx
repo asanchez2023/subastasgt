@@ -32,7 +32,7 @@ const ViewSellerProducts = () => {
 
   const retrieveAllProducts = async () => {
     const response = await axios.get(
-      "http://54.90.239.187:8080/api/product/fetch/seller-wise?sellerId=" +
+      "http://3.234.108.139:8080/api/product/fetch/seller-wise?sellerId=" +
         seller.id +
         "&status=" +
         status
@@ -43,7 +43,7 @@ const ViewSellerProducts = () => {
 
   const deleteProduct = (productId, e) => {
     fetch(
-      "http://54.90.239.187:8080/api/product/delete?productId=" +
+      "http://3.234.108.139:8080/api/product/delete?productId=" +
         productId +
         "&sellerId=" +
         seller.id,
@@ -189,7 +189,7 @@ const ViewSellerProducts = () => {
                       <td>
                         <img
                           src={
-                            "http://54.90.239.187:8080/api/product/" +
+                            "http://3.234.108.139:8080/api/product/" +
                             product.image1
                           }
                           class="img-fluid"

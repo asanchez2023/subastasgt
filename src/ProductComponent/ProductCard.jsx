@@ -15,7 +15,7 @@ const ProductCard = (product) => {
     <div className="col">
       <div class="card product-card rounded-card custom-bg h-100 shadow-lg">
         <img
-          src={"http://54.90.239.187:8080/api/product/" + product.item.image1}
+          src={"http://3.234.108.139:8080/api/product/" + product.item.image1}
           class="card-img-top img-fluid rounded"
           alt="img"
           style={{

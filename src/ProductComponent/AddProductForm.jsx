@@ -13,7 +13,7 @@ const AddProductForm = () => {
 
   const retrieveAllCategories = async () => {
     const response = await axios.get(
-      "http://54.90.239.187:8080/api/category/fetch/all"
+      "http://3.234.108.139:8080/api/category/fetch/all"
     );
     return response.data;
   };
@@ -78,7 +78,7 @@ const AddProductForm = () => {
     formData.append("endDate", product.endDate);
 
     axios
-      .post("http://54.90.239.187:8080/api/product/add", formData, {
+      .post("http://3.234.108.139:8080/api/product/add", formData, {
         headers: {
           Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
         },

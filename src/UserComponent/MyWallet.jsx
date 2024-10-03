@@ -38,14 +38,14 @@ const MyWallet = () => {
 
   const retrieveMyWallet = async () => {
     const response = await axios.get(
-      "http://54.90.239.187:8080/api/user/fetch/user-id?userId=" + user.id
+      "http://3.234.108.139:8080/api/user/fetch/user-id?userId=" + user.id
     );
 
     return response.data;
   };
 
   const addMoneyInWallet = (e) => {
-    fetch("http://54.90.239.187:8080/api/user/authorize/payment", {
+    fetch("http://3.234.108.139:8080/api/user/authorize/payment", {
       method: "POST",
       headers: {
         Accept: "application/json",
