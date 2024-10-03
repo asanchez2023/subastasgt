@@ -31,7 +31,7 @@ const ProductOffers = () => {
     getAllOffers();
     const intervalId = setInterval(() => {
       getAllOffers();
-    }, 5000); // Actualiza cada 5 segundos
+    }, 10000); // Actualiza cada 5 segundos
 
     return () => {
       clearInterval(intervalId);
