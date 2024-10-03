@@ -60,7 +60,7 @@ const ProductOffers = () => {
                       );
                     }
                   }
-                  return <div>Anonymous User</div>;
+                  return <div>Usuario Anónimo</div>;
                 })()}
               </b>
               <p> Q{offer.amount}</p>
