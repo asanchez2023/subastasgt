@@ -256,7 +256,7 @@ const Product = () => {
                   </b>
                 </h4>
                 <h4 class="card-text ms-4">
-                  Contact: {product.seller.emailId + " "}
+                  Contacto: {product.seller.emailId + " "}
                 </h4>
               </div>
             </div>
@@ -277,7 +277,7 @@ const Product = () => {
                         return <b>Existencias : {product.quantity}</b>;
                       } else {
                         return (
-                          <b className="text-danger">Existencias : Out Of Stock!!!</b>
+                          <b className="text-danger">Existencias : Agotado!</b>
                         );
                       }
                     })()}
