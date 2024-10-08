@@ -21,7 +21,8 @@ const ProductOffers = () => {
     const getAllOffers = async () => {
       const alloffers = await retrieveAllOffers();
       if (alloffers) {
-        setoffers(alloffers.offers);
+        const sortedOffers = alloffers.offers.sort((a, b) => b.amount - a.amount);
+        setoffers(sortedOffers);
       }
     };
 
