@@ -96,7 +96,7 @@ const ProductOffers = () => {
         <input
           type="number"
           value={newOfferAmount}
-          onChange={(e) => setNewOfferAmount(parseFloat(e.target.value))}
+          onChange={(e) => setNewOfferAmount(parseFloat(e.target.value) || 0)} // Ensure it defaults to 0 if NaN
           placeholder="Enter your offer"
         />
         <button onClick={handleNewOffer}>Submit Offer</button>
