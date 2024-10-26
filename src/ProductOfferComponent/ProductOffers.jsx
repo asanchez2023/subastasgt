@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 const ProductOffers = () => {
   const [offers, setOffers] = useState([]);
   const [refreshTrigger, setRefreshTrigger] = useState(0); // State variable to trigger re-fetching
-  const [newOfferAmount, setNewOfferAmount] = useState(0); // State for new offer amount
 
   const admin = JSON.parse(sessionStorage.getItem("active-admin"));
   const { productId } = useParams();
@@ -29,7 +28,7 @@ const ProductOffers = () => {
 
     getAllOffers();
 
-    // Set an interval to update the refreshTrigger every 2 seconds
+    // Set an interval to update the refreshTrigger every 5 seconds
     const interval = setInterval(() => {
       setRefreshTrigger((prev) => prev + 1); // Increment the trigger
     }, 2000); // Adjust the interval as needed
@@ -37,36 +36,21 @@ const ProductOffers = () => {
     return () => clearInterval(interval); // Cleanup on unmount
   }, [refreshTrigger]); // Re-run effect when refreshTrigger changes
 
-  const handleNewOffer = () => {
-    const lastBidAmount = offers.length > 0 ? offers[0].amount : 0; // Get the last bid amount
-
-    if (newOfferAmount <= lastBidAmount) {
-      alert(`Your offer must be higher than the last bid of Q${lastBidAmount}.`);
-      return;
-    }
-
-    // Proceed to submit the new offer
-    submitOffer(newOfferAmount);
-  };
-
-  const submitOffer = async (amount) => {
-    try {
-      // Here you would call your API to submit the new offer
-      await axios.post("http://3.234.108.139:8080/api/product/offer/submit", { amount, productId });
-      setNewOfferAmount(0); // Reset the input after successful submission
-      setRefreshTrigger((prev) => prev + 1); // Trigger a refresh to get the updated offers
-    } catch (error) {
-      console.error("Error submitting the offer:", error);
-      alert("There was an error submitting your offer. Please try again.");
-    }
-  };
-
   return (
-    <div className="list-group form-card border-color" style={{ height: "31rem" }}>
+    <div
+      className="list-group form-card border-color"
+      style={{
+        height: "31rem",
+      }}
+    >
       <div className="list-group-item list-group-item-action bg-color custom-bg-text text-center">
         <b>Ofertas de Producto</b>
       </div>
-      <div style={{ overflowY: "auto" }}>
+      <div
+        style={{
+          overflowY: "auto",
+        }}
+      >
         {offers.map((offer) => {
           return (
             <div className="list-group-item list-group-item-action text-color custom-bg" key={offer.id}>
@@ -91,15 +75,6 @@ const ProductOffers = () => {
             </div>
           );
         })}
-      </div>
-      <div className="list-group-item">
-        <input
-          type="number"
-          value={newOfferAmount}
-          onChange={(e) => setNewOfferAmount(parseFloat(e.target.value) || 0)} // Ensure it defaults to 0 if NaN
-          placeholder="Enter your offer"
-        />
-        <button onClick={handleNewOffer}>Submit Offer</button>
       </div>
     </div>
   );
