@@ -31,7 +31,7 @@ const ProductOffers = () => {
     // Set an interval to update the refreshTrigger every 5 seconds
     const interval = setInterval(() => {
       setRefreshTrigger((prev) => prev + 1); // Increment the trigger
-    }, 2000); // Adjust the interval as needed
+    }, 1000); // Adjust the interval as needed
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, [refreshTrigger]); // Re-run effect when refreshTrigger changes
