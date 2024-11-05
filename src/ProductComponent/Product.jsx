@@ -155,7 +155,7 @@ const Product = () => {
         progress: undefined,
       });
     } else if (product.seller.id === user.id) {
-      toast.error("You can't Bid on your own Product !!!", {
+      toast.error("No puedes ofertar en tu propio producto!", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
