@@ -228,7 +228,7 @@ const ViewSellerProducts = () => {
                                 onClick={() => updateProduct(product)}
                                 className="btn btn-sm bg-color custom-bg-text ms-2"
                               >
-                                Update
+                                Actualizar
                               </button>
                             );
                           }
@@ -241,7 +241,7 @@ const ViewSellerProducts = () => {
                                 onClick={() => deleteProduct(product.id)}
                                 className="btn btn-sm bg-color custom-bg-text ms-2"
                               >
-                                Delete
+                                Eliminar
                               </button>
                             );
                           }
