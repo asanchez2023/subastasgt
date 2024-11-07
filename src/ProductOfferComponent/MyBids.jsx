@@ -176,7 +176,7 @@ const MyBids = () => {
                                 className="btn bg-color custom-bg-text btn-sm"
                                 onClick={() => deleteProductOffer(myOffer.id)}
                               >
-                                Delete Offer
+                                Cancelar Oferta
                               </button>
                             );
                           }
