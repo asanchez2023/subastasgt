@@ -19,17 +19,17 @@ const HomePage = () => {
         if (categoryId == null && searchText === "") {
           // Fetch all products
           response = await axios.get(
-            `http://3.234.108.139:8080/api/product/fetch/all?status=Available`
+            `http://localhost:8080/api/product/fetch/all?status=Available`
           );
         } else if (searchText) {
           // Fetch products by name
           response = await axios.get(
-            `http://3.234.108.139:8080/api/product/search?productName=${searchText}`
+            `http://localhost:8080/api/product/search?productName=${searchText}`
           );
         } else {
           // Fetch products by category
           response = await axios.get(
-            `http://3.234.108.139:8080/api/product/fetch/category-wise?categoryId=${categoryId}`
+            `http://localhost:8080/api/product/fetch/category-wise?categoryId=${categoryId}`
           );
         }
         if (response.data) {

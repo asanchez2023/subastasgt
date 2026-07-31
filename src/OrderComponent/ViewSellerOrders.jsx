@@ -50,7 +50,7 @@ const ViewSellerOrders = () => {
 
   const retrieveAllorders = async () => {
     const response = await axios.get(
-      "http://3.234.108.139:8080/api/order/fetch/seller-wise?sellerId=" + seller.id,
+      "http://localhost:8080/api/order/fetch/seller-wise?sellerId=" + seller.id,
       {
         headers: {
           Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
@@ -63,7 +63,7 @@ const ViewSellerOrders = () => {
 
   const retrieveAllUser = async () => {
     const response = await axios.get(
-      "http://3.234.108.139:8080/api/user/fetch/seller/delivery-person?sellerId=" +
+      "http://localhost:8080/api/user/fetch/seller/delivery-person?sellerId=" +
         seller.id,
       {
         headers: {
@@ -77,7 +77,7 @@ const ViewSellerOrders = () => {
 
   const retrieveOrdersById = async () => {
     const response = await axios.get(
-      "http://3.234.108.139:8080/api/order/fetch?orderId=" + orderId
+      "http://localhost:8080/api/order/fetch?orderId=" + orderId
     );
     console.log(response.data);
     return response.data;
@@ -103,7 +103,7 @@ const ViewSellerOrders = () => {
   const assignToDelivery = (orderId, e) => {
     let data = { orderId: assignOrderId, deliveryId: deliveryPersonId };
 
-    fetch("http://3.234.108.139:8080/api/order/assign/delivery-person", {
+    fetch("http://localhost:8080/api/order/assign/delivery-person", {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -250,7 +250,7 @@ const ViewSellerOrders = () => {
                       <td>
                         <img
                           src={
-                            "http://3.234.108.139:8080/api/product/" +
+                            "http://localhost:8080/api/product/" +
                             order.product.image1
                           }
                           class="img-fluid"
@@ -319,7 +319,7 @@ const ViewSellerOrders = () => {
                       <td>
                         {(() => {
                           if (order.deliveryPerson) {
-                            return <b>Delivery Assigned</b>;
+                            return <b>Repartidor Asignado</b>;
                           } else {
                             return (
                               <button
@@ -327,7 +327,7 @@ const ViewSellerOrders = () => {
                                 variant="primary"
                                 onClick={() => assignDelivery(order.orderId)}
                               >
-                                Assign Delivery
+                                Asignar Repartidor
                               </button>
                             );
                           }
@@ -349,7 +349,7 @@ const ViewSellerOrders = () => {
               borderRadius: "1em",
             }}
           >
-            Assign To Delivery Person
+            Asignar a Repartidor
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -364,7 +364,7 @@ const ViewSellerOrders = () => {
 
               <div className=" mb-3">
                 <label className="form-label">
-                  <b>Delivery Person</b>
+                  <b>Repartidor</b>
                 </label>
 
                 <select
@@ -372,7 +372,7 @@ const ViewSellerOrders = () => {
                   onChange={(e) => setDeliveryPersonId(e.target.value)}
                   className="form-control"
                 >
-                  <option value="">Select Delivery Person</option>
+                  <option value="">Seleccionar Repartidor</option>
 
                   {allDelivery.map((delivery) => {
                     return (
@@ -390,7 +390,7 @@ const ViewSellerOrders = () => {
                   onClick={() => assignToDelivery(assignOrderId)}
                   class="btn bg-color custom-bg-text"
                 >
-                  Assign
+                  Asignar
                 </button>
               </div>
 

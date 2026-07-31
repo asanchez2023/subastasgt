@@ -19,7 +19,7 @@ const UpdateProductForm = () => {
 
   const retrieveAllCategories = async () => {
     const response = await axios.get(
-      "http://3.234.108.139:8080/api/category/fetch/all"
+      "http://localhost:8080/api/category/fetch/all"
     );
     return response.data;
   };
@@ -107,7 +107,7 @@ const UpdateProductForm = () => {
       updatedProduct.endDate = updatedEndDateInMillis;
     }
 
-    fetch("http://3.234.108.139:8080/api/product/update/detail", {
+    fetch("http://localhost:8080/api/product/update/detail", {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -202,7 +202,7 @@ const UpdateProductForm = () => {
     formData.append("id", product.id);
 
     axios
-      .put("http://3.234.108.139:8080/api/product/update/image", formData, {
+      .put("http://localhost:8080/api/product/update/image", formData, {
         headers: {
           Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
         },

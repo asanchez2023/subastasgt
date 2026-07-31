@@ -9,7 +9,7 @@ const Header = () => {
 
   const retrieveAllCategories = async () => {
     const response = await axios.get(
-      "http://3.234.108.139:8080/api/category/fetch/all"
+      "http://localhost:8080/api/category/fetch/all"
     );
     return response.data;
   };

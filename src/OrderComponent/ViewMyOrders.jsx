@@ -21,7 +21,7 @@ const ViewMyOrders = () => {
 
   const retrieveCart = async () => {
     const response = await axios.get(
-      "http://3.234.108.139:8080/api/order/fetch/user-wise?userId=" + user.id,
+      "http://localhost:8080/api/order/fetch/user-wise?userId=" + user.id,
       {
         headers: {
           Authorization: "Bearer " + customer_jwtToken, // Replace with your actual JWT token
@@ -89,7 +89,7 @@ const ViewMyOrders = () => {
                       <td>
                         <img
                           src={
-                            "http://3.234.108.139:8080/api/product/" +
+                            "http://localhost:8080/api/product/" +
                             order.product.image1
                           }
                           class="img-fluid"

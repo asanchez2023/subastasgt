@@ -19,12 +19,12 @@ const SellerProducts = () => {
         if (categoryId == null) {
           // Fetch all products
           response = await axios.get(
-            `http://3.234.108.139:8080/api/product/fetch/seller-wise?sellerId=${seller.id}&status=Available`
+            `http://localhost:8080/api/product/fetch/seller-wise?sellerId=${seller.id}&status=Available`
           );
         } else {
           // Fetch products by category
           response = await axios.get(
-            `http://3.234.108.139:8080/api/product/fetch/seller-wise/category-wise?sellerId=${seller.id}&categoryId=${categoryId}&status=Available`
+            `http://localhost:8080/api/product/fetch/seller-wise/category-wise?sellerId=${seller.id}&categoryId=${categoryId}&status=Available`
           );
         }
         if (response.data) {

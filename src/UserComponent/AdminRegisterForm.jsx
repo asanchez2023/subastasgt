@@ -15,7 +15,7 @@ const AdminRegisterForm = () => {
   };
 
   const registerAdmin = (e) => {
-    fetch("http://3.234.108.139:8080/api/user/admin/register", {
+    fetch("http://localhost:8080/api/user/admin/register", {
       method: "POST",
       headers: {
         Accept: "application/json",

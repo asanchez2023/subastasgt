@@ -24,7 +24,7 @@ const ViewAllCategories = () => {
 
   const retrieveAllCategory = async () => {
     const response = await axios.get(
-      "http://3.234.108.139:8080/api/category/fetch/all"
+      "http://localhost:8080/api/category/fetch/all"
     );
     console.log(response.data);
     return response.data;
@@ -32,7 +32,7 @@ const ViewAllCategories = () => {
 
   const deleteCategory = (categoryId, e) => {
     fetch(
-      "http://3.234.108.139:8080/api/category/delete?categoryId=" + categoryId,
+      "http://localhost:8080/api/category/delete?categoryId=" + categoryId,
       {
         method: "DELETE",
         headers: {
