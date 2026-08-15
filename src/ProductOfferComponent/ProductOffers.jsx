@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 const ProductOffers = () => {
   const [offers, setOffers] = useState([]);
@@ -11,7 +12,7 @@ const ProductOffers = () => {
 
   const retrieveAllOffers = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/product/offer/fetch/product?productId=" +
+      `${API_BASE_URL}/api/product/offer/fetch/product?productId=` +
         productId
     );
     return response.data;

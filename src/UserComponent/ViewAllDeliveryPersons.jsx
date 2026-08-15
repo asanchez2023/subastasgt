@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import React from "react";
+import { API_BASE_URL } from "../config";
 
 const ViewAllDeliveryPersons = () => {
   const [allDelivery, setAllDelivery] = useState([]);
@@ -19,7 +20,7 @@ const ViewAllDeliveryPersons = () => {
 
   const retrieveAllUser = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/user/fetch/role-wise?role=Delivery",
+      `${API_BASE_URL}/api/user/fetch/role-wise?role=Delivery`,
       {
         headers: {
           Authorization: "Bearer " + admin_jwtToken, // Replace with your actual JWT token

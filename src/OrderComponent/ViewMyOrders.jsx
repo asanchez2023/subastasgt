@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import React from "react";
+import { API_BASE_URL } from "../config";
+
 const ViewMyOrders = () => {
   let user = JSON.parse(sessionStorage.getItem("active-customer"));
 
@@ -21,7 +23,7 @@ const ViewMyOrders = () => {
 
   const retrieveCart = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/order/fetch/user-wise?userId=" + user.id,
+      `${API_BASE_URL}/api/order/fetch/user-wise?userId=` + user.id,
       {
         headers: {
           Authorization: "Bearer " + customer_jwtToken, // Replace with your actual JWT token
@@ -89,7 +91,7 @@ const ViewMyOrders = () => {
                       <td>
                         <img
                           src={
-                            "http://localhost:8080/api/product/" +
+                            `${API_BASE_URL}/api/product/` +
                             order.product.image1
                           }
                           class="img-fluid"

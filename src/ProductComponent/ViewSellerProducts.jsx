@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../config";
 
 const ViewSellerProducts = () => {
   const seller = JSON.parse(sessionStorage.getItem("active-customer"));
@@ -32,7 +33,7 @@ const ViewSellerProducts = () => {
 
   const retrieveAllProducts = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/product/fetch/seller-wise?sellerId=" +
+      `${API_BASE_URL}/api/product/fetch/seller-wise?sellerId=` +
         seller.id +
         "&status=" +
         status
@@ -43,7 +44,7 @@ const ViewSellerProducts = () => {
 
   const deleteProduct = (productId, e) => {
     fetch(
-      "http://localhost:8080/api/product/delete?productId=" +
+      `${API_BASE_URL}/api/product/delete?productId=` +
         productId +
         "&sellerId=" +
         seller.id,
@@ -189,7 +190,7 @@ const ViewSellerProducts = () => {
                       <td>
                         <img
                           src={
-                            "http://localhost:8080/api/product/" +
+                            `${API_BASE_URL}/api/product/` +
                             product.image1
                           }
                           class="img-fluid"

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../ProductComponent/ProductCard";
 import { useLocation } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 const SellerProducts = () => {
   const location = useLocation();
@@ -19,12 +20,12 @@ const SellerProducts = () => {
         if (categoryId == null) {
           // Fetch all products
           response = await axios.get(
-            `http://localhost:8080/api/product/fetch/seller-wise?sellerId=${seller.id}&status=Available`
+            `${API_BASE_URL}/api/product/fetch/seller-wise?sellerId=${seller.id}&status=Available`
           );
         } else {
           // Fetch products by category
           response = await axios.get(
-            `http://localhost:8080/api/product/fetch/seller-wise/category-wise?sellerId=${seller.id}&categoryId=${categoryId}&status=Available`
+            `${API_BASE_URL}/api/product/fetch/seller-wise/category-wise?sellerId=${seller.id}&categoryId=${categoryId}&status=Available`
           );
         }
         if (response.data) {

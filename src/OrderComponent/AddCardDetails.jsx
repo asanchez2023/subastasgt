@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { API_BASE_URL } from "../config";
 
 const AddCardDetails = () => {
   const location = useLocation();
@@ -24,7 +25,7 @@ const AddCardDetails = () => {
 
   const payForOrder = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8080/api/order/add?userId=" + user.id, {
+    fetch(`${API_BASE_URL}/api/order/add?userId=` + user.id, {
       method: "POST",
       headers: {
         Accept: "application/json",

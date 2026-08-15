@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../config";
 
 const ViewSellerDeliveryPerson = () => {
   const [allDelivery, setAllDelivery] = useState([]);
@@ -25,7 +26,7 @@ const ViewSellerDeliveryPerson = () => {
 
   const retrieveAllUser = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/user/fetch/seller/delivery-person?sellerId=" +
+      `${API_BASE_URL}/api/user/fetch/seller/delivery-person?sellerId=` +
         seller.id,
       {
         headers: {
@@ -39,7 +40,7 @@ const ViewSellerDeliveryPerson = () => {
 
   const deleteDelivery = (userId, e) => {
     fetch(
-      "http://localhost:8080/api/user/delete/seller/delivery-person?deliveryId=" +
+      `${API_BASE_URL}/api/user/delete/seller/delivery-person?deliveryId=` +
         userId,
       {
         method: "DELETE",

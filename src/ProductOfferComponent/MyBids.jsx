@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { API_BASE_URL } from "../config";
 
 const MyBids = () => {
   let navigate = useNavigate();
@@ -23,14 +24,14 @@ const MyBids = () => {
 
   const retrieveMyOffers = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/product/offer/fetch/user?userId=" + user.id
+      `${API_BASE_URL}/api/product/offer/fetch/user?userId=` + user.id
     );
     console.log(response.data);
     return response.data;
   };
 
   const deleteProductOffer = (offerId, e) => {
-    fetch("http://localhost:8080/api/product/offer/id?offerId=" + offerId, {
+    fetch(`${API_BASE_URL}/api/product/offer/id?offerId=` + offerId, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -136,7 +137,7 @@ const MyBids = () => {
                       <td>
                         <img
                           src={
-                            "http://localhost:8080/api/product/" +
+                            `${API_BASE_URL}/api/product/` +
                             myOffer.product.image1
                           }
                           class="img-fluid"

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 const UpdateCategoryForm = () => {
   const location = useLocation();
@@ -17,7 +18,7 @@ const UpdateCategoryForm = () => {
   const saveCategory = (e) => {
     let data = { id, name, description };
 
-    fetch("http://localhost:8080/api/category/update", {
+    fetch(`${API_BASE_URL}/api/category/update`, {
       method: "PUT",
       headers: {
         Accept: "application/json",

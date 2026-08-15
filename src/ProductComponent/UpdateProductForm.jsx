@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import ProductCarousel from "./ProductCarousel";
+import { API_BASE_URL } from "../config";
 
 const UpdateProductForm = () => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const UpdateProductForm = () => {
 
   const retrieveAllCategories = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/category/fetch/all"
+      `${API_BASE_URL}/api/category/fetch/all`
     );
     return response.data;
   };
@@ -107,7 +108,7 @@ const UpdateProductForm = () => {
       updatedProduct.endDate = updatedEndDateInMillis;
     }
 
-    fetch("http://localhost:8080/api/product/update/detail", {
+    fetch(`${API_BASE_URL}/api/product/update/detail`, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -202,7 +203,7 @@ const UpdateProductForm = () => {
     formData.append("id", product.id);
 
     axios
-      .put("http://localhost:8080/api/product/update/image", formData, {
+      .put(`${API_BASE_URL}/api/product/update/image`, formData, {
         headers: {
           Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
         },

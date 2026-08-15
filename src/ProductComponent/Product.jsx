@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import ProductCarousel from "./ProductCarousel";
 import ProductOffers from "../ProductOfferComponent/ProductOffers";
+import { API_BASE_URL } from "../config";
 
 const Product = () => {
   const { productId, categoryId } = useParams();
@@ -30,7 +31,7 @@ const Product = () => {
 
   const retrieveProduct = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/product/fetch?productId=" + productId
+      `${API_BASE_URL}/api/product/fetch?productId=` + productId
     );
 
     return response.data;
@@ -38,7 +39,7 @@ const Product = () => {
 
   const retrieveCustomer = async (customerId) => {
     const response = await axios.get(
-      "http://localhost:8080/api/user/fetch/user-id?userId=" + customerId
+      `${API_BASE_URL}/api/user/fetch/user-id?userId=` + customerId
     );
 
     return response.data;
@@ -75,7 +76,7 @@ const Product = () => {
 
   const retrieveProductsByCategory = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/product/fetch/category-wise?categoryId=" +
+      `${API_BASE_URL}/api/product/fetch/category-wise?categoryId=` +
         categoryId
     );
     console.log(response.data);
@@ -83,7 +84,7 @@ const Product = () => {
   };
 
   const saveProductOffer = (amount, e) => {
-    fetch("http://localhost:8080/api/product/offer/add", {
+    fetch(`${API_BASE_URL}/api/product/offer/add`, {
       method: "POST",
       headers: {
         Accept: "application/json",

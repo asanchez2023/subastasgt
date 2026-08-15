@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config"; // Importación estándar
+
 const ProductCarousel = (product) => {
   return (
     <div
@@ -30,11 +32,11 @@ const ProductCarousel = (product) => {
       <div className="carousel-inner">
         <div className="carousel-item active">
           <img
-            src={"http://localhost:8080/api/product/" + product.item.image1}
+            src={`${API_BASE_URL}/api/product/${product.item.image1}`}
             className="d-block card-img-top img-fluid"
             alt="..."
             style={{
-              maxHeight: "450px", // Adjust the maximum height as needed
+              maxHeight: "450px",
               width: "auto",
               margin: "0 auto",
             }}
@@ -42,11 +44,11 @@ const ProductCarousel = (product) => {
         </div>
         <div className="carousel-item">
           <img
-            src={"http://localhost:8080/api/product/" + product.item.image2}
+            src={`${API_BASE_URL}/api/product/${product.item.image2}`}
             className="d-block card-img-top img-fluid"
             alt="..."
             style={{
-              maxHeight: "450px", // Adjust the maximum height as needed
+              maxHeight: "450px",
               width: "auto",
               margin: "0 auto",
             }}
@@ -54,11 +56,11 @@ const ProductCarousel = (product) => {
         </div>
         <div className="carousel-item">
           <img
-            src={"http://localhost:8080/api/product/" + product.item.image3}
+            src={`${API_BASE_URL}/api/product/${product.item.image3}`}
             className="d-block card-img-top img-fluid"
             alt="..."
             style={{
-              maxHeight: "450px", // Adjust the maximum height as needed
+              maxHeight: "450px",
               width: "auto",
               margin: "0 auto",
             }}

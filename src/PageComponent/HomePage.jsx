@@ -4,6 +4,7 @@ import axios from "axios";
 import ProductCard from "../ProductComponent/ProductCard";
 import Carousel from "./Carousel";
 import Footer from "../NavbarComponent/Footer";
+import { API_BASE_URL } from "../config"; // Ajusta la ruta relativa según la ubicación del archivo
 
 const HomePage = () => {
   const { categoryId } = useParams();
@@ -12,29 +13,29 @@ const HomePage = () => {
   const [tempSearchText, setTempSearchText] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let response;
+      const fetchData = async () => {
+        try {
+          let response;
 
-        if (categoryId == null && searchText === "") {
-          // Fetch all products
-          response = await axios.get(
-            `http://localhost:8080/api/product/fetch/all?status=Available`
-          );
-        } else if (searchText) {
-          // Fetch products by name
-          response = await axios.get(
-            `http://localhost:8080/api/product/search?productName=${searchText}`
-          );
-        } else {
-          // Fetch products by category
-          response = await axios.get(
-            `http://localhost:8080/api/product/fetch/category-wise?categoryId=${categoryId}`
-          );
-        }
-        if (response.data) {
-          setProducts(response.data.products);
-        }
+          if (categoryId == null && searchText === "") {
+            // Fetch all products
+            response = await axios.get(
+              `${API_BASE_URL}/api/product/fetch/all?status=Available`
+            );
+          } else if (searchText) {
+            // Fetch products by name
+            response = await axios.get(
+              `${API_BASE_URL}/api/product/search?productName=${searchText}`
+            );
+          } else {
+            // Fetch products by category
+            response = await axios.get(
+              `${API_BASE_URL}/api/product/fetch/category-wise?categoryId=${categoryId}`
+            );
+          }
+          if (response.data) {
+            setProducts(response.data.products);
+          }
       } catch (error) {
         console.error("Error fetching data:", error);
       }

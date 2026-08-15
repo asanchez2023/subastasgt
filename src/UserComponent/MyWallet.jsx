@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 const MyWallet = () => {
   let navigate = useNavigate();
@@ -38,14 +39,14 @@ const MyWallet = () => {
 
   const retrieveMyWallet = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/user/fetch/user-id?userId=" + user.id
+      `${API_BASE_URL}/api/user/fetch/user-id?userId=` + user.id
     );
 
     return response.data;
   };
 
   const addMoneyInWallet = (e) => {
-    fetch("http://localhost:8080/api/user/authorize/payment", {
+    fetch(`${API_BASE_URL}/api/user/authorize/payment`, {
       method: "POST",
       headers: {
         Accept: "application/json",

@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
+import { API_BASE_URL } from "../config";
 
 const ViewDeliveryOrders = () => {
   const deliveryPerson = JSON.parse(sessionStorage.getItem("active-delivery"));
@@ -74,7 +75,7 @@ const ViewDeliveryOrders = () => {
 
   const retrieveAllorders = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/order/fetch/delivery-wise?deliveryPersonId=" +
+      `${API_BASE_URL}/api/order/fetch/delivery-wise?deliveryPersonId=` +
         deliveryPerson.id,
       {
         headers: {
@@ -88,7 +89,7 @@ const ViewDeliveryOrders = () => {
 
   const retrieveAllDeliveryStatus = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/order/fetch/delivery-status/all"
+      `${API_BASE_URL}/api/order/fetch/delivery-status/all`
     );
     console.log(response.data);
     return response.data;
@@ -96,7 +97,7 @@ const ViewDeliveryOrders = () => {
 
   const retrieveAllDeliveryTiming = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/order/fetch/delivery-time/all"
+      `${API_BASE_URL}/api/order/fetch/delivery-time/all`
     );
     console.log(response.data);
     return response.data;
@@ -104,7 +105,7 @@ const ViewDeliveryOrders = () => {
 
   const retrieveOrdersById = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/order/fetch?orderId=" + orderId
+      `${API_BASE_URL}/api/order/fetch?orderId=` + orderId
     );
     console.log(response.data);
     return response.data;
@@ -130,7 +131,7 @@ const ViewDeliveryOrders = () => {
   const updateOrderStatus = (orderId, e) => {
     deliveryUpdateRequest.orderId = assignOrderId;
 
-    fetch("http://localhost:8080/api/order/update/delivery-status", {
+    fetch(`${API_BASE_URL}/api/order/update/delivery-status`, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -275,7 +276,7 @@ const ViewDeliveryOrders = () => {
                       <td>
                         <img
                           src={
-                            "http://localhost:8080/api/product/" +
+                            `${API_BASE_URL}/api/product/` +
                             order.product.image1
                           }
                           class="img-fluid"

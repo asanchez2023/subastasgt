@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 const AddProductForm = () => {
   const [categories, setCategories] = useState([]);
@@ -13,7 +14,7 @@ const AddProductForm = () => {
 
   const retrieveAllCategories = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/category/fetch/all"
+      `${API_BASE_URL}/api/category/fetch/all`
     );
     return response.data;
   };
@@ -78,7 +79,7 @@ const AddProductForm = () => {
     formData.append("endDate", product.endDate);
 
     axios
-      .post("http://localhost:8080/api/product/add", formData, {
+      .post(`${API_BASE_URL}/api/product/add`, formData, {
         headers: {
           Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
         },

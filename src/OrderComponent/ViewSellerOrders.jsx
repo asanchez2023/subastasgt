@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
+import { API_BASE_URL } from "../config";
 
 const ViewSellerOrders = () => {
   const seller = JSON.parse(sessionStorage.getItem("active-customer"));
@@ -50,7 +51,7 @@ const ViewSellerOrders = () => {
 
   const retrieveAllorders = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/order/fetch/seller-wise?sellerId=" + seller.id,
+      `${API_BASE_URL}/api/order/fetch/seller-wise?sellerId=` + seller.id,
       {
         headers: {
           Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
@@ -63,7 +64,7 @@ const ViewSellerOrders = () => {
 
   const retrieveAllUser = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/user/fetch/seller/delivery-person?sellerId=" +
+      `${API_BASE_URL}/api/user/fetch/seller/delivery-person?sellerId=` +
         seller.id,
       {
         headers: {
@@ -77,7 +78,7 @@ const ViewSellerOrders = () => {
 
   const retrieveOrdersById = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/order/fetch?orderId=" + orderId
+      `${API_BASE_URL}/api/order/fetch?orderId=` + orderId
     );
     console.log(response.data);
     return response.data;
@@ -103,7 +104,7 @@ const ViewSellerOrders = () => {
   const assignToDelivery = (orderId, e) => {
     let data = { orderId: assignOrderId, deliveryId: deliveryPersonId };
 
-    fetch("http://localhost:8080/api/order/assign/delivery-person", {
+    fetch(`${API_BASE_URL}/api/order/assign/delivery-person`, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -250,7 +251,7 @@ const ViewSellerOrders = () => {
                       <td>
                         <img
                           src={
-                            "http://localhost:8080/api/product/" +
+                            `${API_BASE_URL}/api/product/` +
                             order.product.image1
                           }
                           class="img-fluid"

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 const GetAllCategories = () => {
   const [categories, setCategories] = useState([]);
 
   const retrieveAllCategories = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/category/fetch/all?start=0&count=12"
+      `${API_BASE_URL}/api/category/fetch/all?start=0&count=12`
     );
     return response.data;
   };

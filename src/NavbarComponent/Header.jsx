@@ -3,13 +3,14 @@ import RoleNav from "./RoleNav";
 import logo from "../images/e_logo.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config";
 
 const Header = () => {
   const [categories, setCategories] = useState([]);
 
   const retrieveAllCategories = async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/category/fetch/all"
+      `${API_BASE_URL}/api/category/fetch/all`
     );
     return response.data;
   };

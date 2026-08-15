@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 const PaypalResponse = () => {
   let navigate = useNavigate();
@@ -22,7 +23,7 @@ const PaypalResponse = () => {
   console.log(token);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/user/execute/payment", {
+    fetch(`${API_BASE_URL}/api/user/execute/payment`, {
       method: "POST",
       headers: {
         Accept: "application/json",
