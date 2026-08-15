@@ -3,10 +3,10 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const ProductOffers = () => {
-  const [offers, setoffers] = useState([]);
+  const [offers, setOffers] = useState([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(0); // State variable to trigger re-fetching
 
   const admin = JSON.parse(sessionStorage.getItem("active-admin"));
-
   const { productId } = useParams();
 
   const retrieveAllOffers = async () => {
@@ -19,23 +19,31 @@ const ProductOffers = () => {
 
   useEffect(() => {
     const getAllOffers = async () => {
-      const alloffers = await retrieveAllOffers();
-      if (alloffers) {
-        setoffers(alloffers.offers);
+      const allOffers = await retrieveAllOffers();
+      if (allOffers) {
+        const sortedOffers = allOffers.offers.sort((a, b) => b.amount - a.amount);
+        setOffers(sortedOffers);
       }
     };
 
     getAllOffers();
-  }, []);
+
+    // Set an interval to update the refreshTrigger every 5 seconds
+    const interval = setInterval(() => {
+      setRefreshTrigger((prev) => prev + 1); // Increment the trigger
+    }, 1000); // Adjust the interval as needed
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [refreshTrigger]); // Re-run effect when refreshTrigger changes
 
   return (
     <div
-      class="list-group form-card border-color"
+      className="list-group form-card border-color"
       style={{
         height: "31rem",
       }}
     >
-      <div class="list-group-item list-group-item-action bg-color custom-bg-text text-center">
+      <div className="list-group-item list-group-item-action bg-color custom-bg-text text-center">
         <b>Ofertas de Producto</b>
       </div>
       <div
@@ -45,7 +53,7 @@ const ProductOffers = () => {
       >
         {offers.map((offer) => {
           return (
-            <div class="list-group-item list-group-item-action text-color custom-bg">
+            <div className="list-group-item list-group-item-action text-color custom-bg" key={offer.id}>
               <b className="text-color1">
                 {(() => {
                   if (offer.product.status === "Sold") {

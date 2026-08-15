@@ -319,7 +319,7 @@ const ViewSellerOrders = () => {
                       <td>
                         {(() => {
                           if (order.deliveryPerson) {
-                            return <b>Repartidor Asignado</b>;
+                            return <b>Delivery Assigned</b>;
                           } else {
                             return (
                               <button
@@ -327,7 +327,7 @@ const ViewSellerOrders = () => {
                                 variant="primary"
                                 onClick={() => assignDelivery(order.orderId)}
                               >
-                                Asignar Repartidor
+                                Assign Delivery
                               </button>
                             );
                           }
@@ -349,7 +349,7 @@ const ViewSellerOrders = () => {
               borderRadius: "1em",
             }}
           >
-            Asignar a Repartidor
+            Assign To Delivery Person
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -364,7 +364,7 @@ const ViewSellerOrders = () => {
 
               <div className=" mb-3">
                 <label className="form-label">
-                  <b>Repartidor</b>
+                  <b>Delivery Person</b>
                 </label>
 
                 <select
@@ -372,7 +372,7 @@ const ViewSellerOrders = () => {
                   onChange={(e) => setDeliveryPersonId(e.target.value)}
                   className="form-control"
                 >
-                  <option value="">Seleccionar Repartidor</option>
+                  <option value="">Select Delivery Person</option>
 
                   {allDelivery.map((delivery) => {
                     return (
@@ -390,7 +390,7 @@ const ViewSellerOrders = () => {
                   onClick={() => assignToDelivery(assignOrderId)}
                   class="btn bg-color custom-bg-text"
                 >
-                  Asignar
+                  Assign
                 </button>
               </div>
 

@@ -155,7 +155,7 @@ const Product = () => {
         progress: undefined,
       });
     } else if (product.seller.id === user.id) {
-      toast.error("You can't Bid on your own Product !!!", {
+      toast.error("No puedes ofertar en tu propio producto!", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
@@ -256,7 +256,7 @@ const Product = () => {
                   </b>
                 </h4>
                 <h4 class="card-text ms-4">
-                  Contacto: {product.seller.emailId + " "}
+                  Contact: {product.seller.emailId + " "}
                 </h4>
               </div>
             </div>
@@ -277,7 +277,7 @@ const Product = () => {
                         return <b>Existencias : {product.quantity}</b>;
                       } else {
                         return (
-                          <b className="text-danger">Existencias : Agotado!</b>
+                          <b className="text-danger">Existencias : Out Of Stock!!!</b>
                         );
                       }
                     })()}
