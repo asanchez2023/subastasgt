@@ -19,11 +19,6 @@ const ProductCard = (product) => {
           src={`${API_BASE_URL}/api/product/` + product.item.image1}
           class="card-img-top img-fluid rounded"
           alt="img"
-          style={{
-            maxHeight: "300px", // Adjust the maximum height as needed
-            width: "auto",
-            margin: "0 auto",
-          }}
         />
 
         <div class="card-body text-color">
@@ -54,10 +49,10 @@ const ProductCard = (product) => {
               Iniciar Oferta
             </Link>
 
-            <div className="text-color">
+            <div className="text-color price-tag">
               <p>
                 <span>
-                  <h4>Precio : Q{product.item.price}</h4>
+                  <h4>Q{product.item.price}</h4>
                 </span>
               </p>
             </div>

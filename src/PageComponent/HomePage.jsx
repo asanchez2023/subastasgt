@@ -54,7 +54,7 @@ const HomePage = () => {
       <Carousel />
 
       <div className="d-flex aligns-items-center justify-content-center mt-5">
-        <form class="row g-3">
+        <form class="row g-3 search-panel">
           <div class="col-auto">
             <input
               type="text"

@@ -3,7 +3,7 @@ const Footer = () => {
   return (
     <div>
       <div class="container my-5">
-        <footer class="text-center text-lg-start text-color">
+        <footer class="text-center text-lg-start text-color site-footer">
           <div class="container-fluid p-4 pb-0">
             <section class="">
               <div class="row">

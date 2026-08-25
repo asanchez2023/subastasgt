@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <div>
-      <nav class="navbar  navbar-expand-lg custom-bg text-color">
+      <nav class="navbar navbar-expand-lg custom-bg text-color app-navbar sticky-top">
         <div class="container-fluid text-color">
           <Link to="/" class="navbar-brand">
             <img

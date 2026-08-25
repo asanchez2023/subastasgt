@@ -30,7 +30,7 @@ import PaypalResponse from "./UserComponent/PaypalResponse";
 
 function App() {
   return (
-    <div>
+    <div className="app-shell">
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />

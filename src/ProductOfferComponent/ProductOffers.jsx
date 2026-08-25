@@ -3,43 +3,87 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { API_BASE_URL } from "../config";
 
+const POLL_MS = 2000;
+
+const sameOffers = (prev, next) =>
+  prev.length === next.length &&
+  prev.every(
+    (offer, i) =>
+      offer.id === next[i].id &&
+      offer.amount === next[i].amount &&
+      offer.status === next[i].status
+  );
+
 const ProductOffers = () => {
   const [offers, setOffers] = useState([]);
-  const [refreshTrigger, setRefreshTrigger] = useState(0); // State variable to trigger re-fetching
-
-  const admin = JSON.parse(sessionStorage.getItem("active-admin"));
   const { productId } = useParams();
 
-  const retrieveAllOffers = async () => {
-    const response = await axios.get(
-      `${API_BASE_URL}/api/product/offer/fetch/product?productId=` +
-        productId
-    );
-    return response.data;
-  };
+  let admin = null;
+  try {
+    admin = JSON.parse(sessionStorage.getItem("active-admin"));
+  } catch {
+    admin = null;
+  }
 
   useEffect(() => {
-    const getAllOffers = async () => {
-      const allOffers = await retrieveAllOffers();
-      if (allOffers) {
-        const sortedOffers = allOffers.offers.sort((a, b) => b.amount - a.amount);
-        setOffers(sortedOffers);
+    if (!productId) return;
+
+    const controller = new AbortController();
+    let inFlight = false;
+
+    const loadOffers = async () => {
+      if (inFlight || document.hidden) return;
+      inFlight = true;
+      try {
+        const { data } = await axios.get(
+          `${API_BASE_URL}/api/product/offer/fetch/product`,
+          { params: { productId }, signal: controller.signal }
+        );
+        const next = [...(data?.offers ?? [])].sort(
+          (a, b) => b.amount - a.amount
+        );
+        setOffers((prev) => (sameOffers(prev, next) ? prev : next));
+      } catch (err) {
+        if (!axios.isCancel(err) && err.code !== "ERR_CANCELED") {
+          console.error("Failed to load product offers", err);
+        }
+      } finally {
+        inFlight = false;
       }
     };
 
-    getAllOffers();
+    const onVisibilityChange = () => {
+      if (!document.hidden) loadOffers();
+    };
 
-    // Set an interval to update the refreshTrigger every 5 seconds
-    const interval = setInterval(() => {
-      setRefreshTrigger((prev) => prev + 1); // Increment the trigger
-    }, 1000); // Adjust the interval as needed
+    loadOffers();
+    const interval = setInterval(loadOffers, POLL_MS);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, [refreshTrigger]); // Re-run effect when refreshTrigger changes
+    return () => {
+      controller.abort();
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [productId]);
+
+  const offerLabel = (offer) => {
+    if (offer.product?.status === "Sold" && offer.status === "Won") {
+      return (
+        <div>
+          {admin
+            ? `${offer.user.firstName} ${offer.user.lastName}`
+            : "Anonymous User"}{" "}
+          <span className="text-success">[WON]</span>
+        </div>
+      );
+    }
+    return <div>Usuario Anónimo</div>;
+  };
 
   return (
     <div
-      className="list-group form-card border-color"
+      className="list-group form-card border-color offers-panel"
       style={{
         height: "31rem",
       }}
@@ -52,30 +96,15 @@ const ProductOffers = () => {
           overflowY: "auto",
         }}
       >
-        {offers.map((offer) => {
-          return (
-            <div className="list-group-item list-group-item-action text-color custom-bg" key={offer.id}>
-              <b className="text-color1">
-                {(() => {
-                  if (offer.product.status === "Sold") {
-                    if (offer.status === "Won") {
-                      return (
-                        <div>
-                          {admin
-                            ? offer.user.firstName + " " + offer.user.lastName
-                            : "Anonymous User"}{" "}
-                          <span className="text-success">[WON]</span>
-                        </div>
-                      );
-                    }
-                  }
-                  return <div>Usuario Anónimo</div>;
-                })()}
-              </b>
-              <p> Q{offer.amount}</p>
-            </div>
-          );
-        })}
+        {offers.map((offer) => (
+          <div
+            className="list-group-item list-group-item-action text-color custom-bg"
+            key={offer.id}
+          >
+            <b className="text-color1">{offerLabel(offer)}</b>
+            <p> Q{offer.amount}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
