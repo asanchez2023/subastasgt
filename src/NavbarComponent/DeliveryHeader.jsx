@@ -9,7 +9,7 @@ const DeliveryHeader = () => {
   console.log(user);
 
   const deliveryLogout = () => {
-    toast.success("logged out!!!", {
+    toast.success("Sesión Finalizada", {
       position: "top-center",
       autoClose: 1000,
       hideProgressBar: false,
@@ -18,12 +18,12 @@ const DeliveryHeader = () => {
       draggable: true,
       progress: undefined,
     });
-    sessionStorage.removeItem("active-delivery");
-    sessionStorage.removeItem("delivery-jwtToken");
-    window.location.reload(true);
-    setTimeout(() => {
-      navigate("/home");
-    }, 2000); // Redirect after 3 seconds
+
+    // 1. Limpiar todas las claves de sesión
+    sessionStorage.clear();
+
+    // 2. Redirigir de inmediato redirigiendo toda la ventana a /home
+    window.location.href = "/home";
   };
   return (
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">

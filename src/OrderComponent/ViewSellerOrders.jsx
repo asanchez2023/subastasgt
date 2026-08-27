@@ -50,31 +50,38 @@ const ViewSellerOrders = () => {
   }, [orderId]);
 
   const retrieveAllorders = async () => {
+    // Obtener el JWT directamente del sessionStorage
+    const jwtToken = sessionStorage.getItem("jwtToken");
+
     const response = await axios.get(
-      `${API_BASE_URL}/api/order/fetch/seller-wise?sellerId=` + seller.id,
-      {
-        headers: {
-          Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
-        },
-      }
+        `${API_BASE_URL}/api/order/fetch/seller-wise?sellerId=` + seller.id,
+        {
+          headers: {
+            Authorization: "Bearer " + jwtToken,
+          },
+        }
     );
     console.log(response.data);
     return response.data;
   };
 
   const retrieveAllUser = async () => {
+    // Obtener el token actualizado desde sessionStorage
+    const jwtToken = sessionStorage.getItem("jwtToken");
+
     const response = await axios.get(
-      `${API_BASE_URL}/api/user/fetch/seller/delivery-person?sellerId=` +
+        `${API_BASE_URL}/api/user/fetch/seller/delivery-person?sellerId=` +
         seller.id,
-      {
-        headers: {
-          Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
-        },
-      }
+        {
+          headers: {
+            Authorization: "Bearer " + jwtToken,
+          },
+        }
     );
     console.log(response.data);
     return response.data;
   };
+
 
   const retrieveOrdersById = async () => {
     const response = await axios.get(

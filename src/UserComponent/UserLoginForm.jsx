@@ -5,185 +5,143 @@ import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
 
 const UserLoginForm = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [loginRequest, setLoginRequest] = useState({
     emailId: "",
     password: "",
-    role: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleUserInput = (e) => {
     setLoginRequest({ ...loginRequest, [e.target.name]: e.target.value });
   };
 
-  const loginAction = (e) => {
-    fetch(`${API_BASE_URL}/api/user/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginRequest),
-    })
-      .then((result) => {
-        console.log("result", result);
-        result.json().then((res) => {
-          if (res.success) {
-            console.log("Got the success response");
+  const loginAction = async (e) => {
+    e.preventDefault();
 
-            if (res.jwtToken !== null) {
-              if (res.user.role === "Admin") {
-                sessionStorage.setItem(
-                  "active-admin",
-                  JSON.stringify(res.user)
-                );
-                sessionStorage.setItem("admin-jwtToken", res.jwtToken);
-              } else if (res.user.role === "Customer") {
-                sessionStorage.setItem(
-                  "active-customer",
-                  JSON.stringify(res.user)
-                );
-                sessionStorage.setItem("customer-jwtToken", res.jwtToken);
-              } else if (res.user.role === "Delivery") {
-                sessionStorage.setItem(
-                  "active-delivery",
-                  JSON.stringify(res.user)
-                );
-                sessionStorage.setItem("delivery-jwtToken", res.jwtToken);
-              }
-            }
+    if (!loginRequest.emailId || !loginRequest.password) {
+      toast.error("Por favor, ingresa correo y contraseña.", { position: "top-center" });
+      return;
+    }
 
-            if (res.jwtToken !== null) {
-              toast.success(res.responseMessage, {
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-              setTimeout(() => {
-                window.location.href = "/home";
-              }, 1000); // Redirect after 3 seconds
-            } else {
-              toast.error(res.responseMessage, {
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-            }
-          } else {
-            toast.error(res.responseMessage, {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          }
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("Error en el servidor", {
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/user/login`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginRequest),
+      });
+
+      const res = await response.json();
+
+      if (res.success && res.jwtToken) {
+        // Guardar Token
+        sessionStorage.setItem("jwtToken", res.jwtToken);
+
+        // Definir la clave según el rol que devolvió el backend
+        const role = res.user.role;
+        let userKey = "active-customer";
+
+        if (role === "Admin") {
+          userKey = "active-admin";
+        } else if (role === "Delivery") {
+          userKey = "active-delivery";
+        } else if (role === "Customer") {
+          userKey = "active-customer";
+        }
+
+        // Almacenar el objeto usuario en la clave correspondiente
+        sessionStorage.setItem(userKey, JSON.stringify(res.user));
+
+        toast.success(res.responseMessage || "¡Inicio de sesión exitoso!", {
           position: "top-center",
           autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
+
+        setTimeout(() => {
+          navigate("/home");
+          window.location.reload(); // Forzar la actualización del Header
+        }, 1000);
+      } else {
+        toast.error(res.responseMessage || "Credenciales incorrectas", {
+          position: "top-center",
+          autoClose: 1500,
+        });
+      }
+    } catch (error) {
+      console.error("Error en la solicitud de login:", error);
+      toast.error("Error de conexión con el servidor", {
+        position: "top-center",
+        autoClose: 1500,
       });
-    e.preventDefault();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div>
-      <div className="mt-5 d-flex aligns-items-center justify-content-center">
-        <div
-          className="form-card border-color custom-bg"
-          style={{ width: "25rem" }}
-        >
-          <div className="container-fluid">
-            <div
-              className="card-header bg-color custom-bg-text mt-2 d-flex justify-content-center align-items-center"
-              style={{
-                borderRadius: "1em",
-                height: "38px",
-              }}
-            >
-              <h4 className="card-title">Inicio de Sesión de Usuario</h4>
+      <div className="mt-5 d-flex align-items-center justify-content-center">
+        <div className="card border-0 shadow-lg" style={{ width: "24rem", borderRadius: "1rem" }}>
+          <div className="card-body p-4">
+            <div className="text-center mb-4">
+              <h4 className="fw-bold text-dark">Inicio de Sesión</h4>
+              <p className="text-muted small">Ingresa tus datos para acceder</p>
             </div>
-            <div className="card-body mt-3">
-              <form>
-                <div class="mb-3 text-color">
-                  <label for="role" class="form-label">
-                    <b>Rol de Usuario</b>
-                  </label>
-                  <select
-                    onChange={handleUserInput}
-                    className="form-control"
-                    name="role"
-                  >
-                    <option value="0">Seleccione Rol</option>
-                    <option value="Admin"> Administrador </option>
-                    <option value="Customer"> Cliente </option>
-                    <option value="Delivery"> Delivery </option>
-                  </select>
-                </div>
 
-                <div className="mb-3 text-color">
-                  <label for="emailId" class="form-label">
-                    <b>Correo Electrónico</b>
-                  </label>
-                  <input
+            <form onSubmit={loginAction}>
+              <div className="mb-3 text-start">
+                <label htmlFor="emailId" className="form-label fw-semibold">
+                  Correo Electrónico
+                </label>
+                <input
                     type="email"
-                    className="form-control"
+                    className="form-control py-2"
                     id="emailId"
                     name="emailId"
+                    placeholder="ejemplo@correo.com"
                     onChange={handleUserInput}
                     value={loginRequest.emailId}
-                  />
-                </div>
-                <div className="mb-3 text-color">
-                  <label for="password" className="form-label">
-                    <b>Contraseña</b>
-                  </label>
-                  <input
+                    required
+                />
+              </div>
+
+              <div className="mb-4 text-start">
+                <label htmlFor="password" className="form-label fw-semibold">
+                  Contraseña
+                </label>
+                <input
                     type="password"
-                    className="form-control"
+                    className="form-control py-2"
                     id="password"
                     name="password"
+                    placeholder="••••••••"
                     onChange={handleUserInput}
                     value={loginRequest.password}
-                    autoComplete="on"
-                  />
-                </div>
-                <div className="d-flex aligns-items-center justify-content-center mb-2">
-                  <button
+                    autoComplete="current-password"
+                    required
+                />
+              </div>
+
+              <div className="d-grid gap-2">
+                <button
                     type="submit"
-                    className="btn bg-color custom-bg-text"
-                    onClick={loginAction}
-                  >
-                    Iniciar Sesión
-                  </button>
-                </div>
-                <ToastContainer />
-              </form>
-            </div>
+                    className="btn btn-primary py-2 fw-semibold"
+                    disabled={isLoading}
+                >
+                  {isLoading ? "Ingresando..." : "Iniciar Sesión"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
+        <ToastContainer />
       </div>
-    </div>
   );
 };
 

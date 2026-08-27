@@ -22,17 +22,21 @@ const ViewMyOrders = () => {
   }, []);
 
   const retrieveCart = async () => {
+    // Obtener el JWT válido desde sessionStorage
+    const jwtToken = sessionStorage.getItem("jwtToken");
+
     const response = await axios.get(
-      `${API_BASE_URL}/api/order/fetch/user-wise?userId=` + user.id,
-      {
-        headers: {
-          Authorization: "Bearer " + customer_jwtToken, // Replace with your actual JWT token
-        },
-      }
+        `${API_BASE_URL}/api/order/fetch/user-wise?userId=` + user.id,
+        {
+          headers: {
+            Authorization: "Bearer " + jwtToken,
+          },
+        }
     );
     console.log(response.data);
     return response.data;
   };
+
 
   const formatDateFromEpoch = (epochTime) => {
     const date = new Date(Number(epochTime));

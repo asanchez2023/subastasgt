@@ -25,14 +25,17 @@ const ViewSellerDeliveryPerson = () => {
   }, []);
 
   const retrieveAllUser = async () => {
+    // 1. Obtener el token directamente de sessionStorage
+    const jwtToken = sessionStorage.getItem("jwtToken");
+
     const response = await axios.get(
-      `${API_BASE_URL}/api/user/fetch/seller/delivery-person?sellerId=` +
+        `${API_BASE_URL}/api/user/fetch/seller/delivery-person?sellerId=` +
         seller.id,
-      {
-        headers: {
-          Authorization: "Bearer " + seller_jwtToken, // Replace with your actual JWT token
-        },
-      }
+        {
+          headers: {
+            Authorization: "Bearer " + jwtToken, // Usar el token recuperado
+          },
+        }
     );
     console.log(response.data);
     return response.data;
