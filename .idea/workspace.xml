@@ -3,12 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="0f9f6793-9fea-4572-ae63-3d850217efed" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NavbarComponent/AdminHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/NavbarComponent/AdminHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NavbarComponent/DeliveryHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/NavbarComponent/DeliveryHeader.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NavbarComponent/HeaderUser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/NavbarComponent/HeaderUser.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OrderComponent/ViewDeliveryOrders.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderComponent/ViewDeliveryOrders.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OrderComponent/ViewMyOrders.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderComponent/ViewMyOrders.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OrderComponent/ViewSellerOrders.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderComponent/ViewSellerOrders.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UserComponent/UserLoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserComponent/UserLoginForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductComponent/AddProductForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductComponent/AddProductForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductComponent/Product.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductComponent/Product.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductComponent/ProductCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductComponent/ProductCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductComponent/SellerProducts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductComponent/SellerProducts.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductComponent/ViewSellerProducts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductComponent/ViewSellerProducts.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductOfferComponent/MyBids.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductOfferComponent/MyBids.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductOfferComponent/ProductOffers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductOfferComponent/ProductOffers.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UserComponent/UserRegister.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserComponent/UserRegister.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserComponent/ViewSellerDeliveryPerson.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserComponent/ViewSellerDeliveryPerson.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,6 +46,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>

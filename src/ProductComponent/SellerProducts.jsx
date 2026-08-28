@@ -50,7 +50,7 @@ const SellerProducts = () => {
           height: "38px",
         }}
       >
-        <h5 class="card-title ms-3">Seller Name: {sellerName}</h5>
+        <h5 class="card-title ms-3">Vendedor: {sellerName}</h5>
       </div>
 
       <div className="col-md-12 mt-3">

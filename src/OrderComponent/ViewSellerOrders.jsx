@@ -7,16 +7,14 @@ import { API_BASE_URL } from "../config";
 
 const ViewSellerOrders = () => {
   const seller = JSON.parse(sessionStorage.getItem("active-customer"));
+  const seller_jwtToken = sessionStorage.getItem("jwtToken");
+
   const [orders, setOrders] = useState([]);
-
-  const seller_jwtToken = sessionStorage.getItem("customer-jwtToken");
-
   const [orderId, setOrderId] = useState("");
   const [tempOrderId, setTempOrderId] = useState("");
 
   const [assignOrderId, setAssignOrderId] = useState("");
   const [deliveryPersonId, setDeliveryPersonId] = useState("");
-
   const [allDelivery, setAllDelivery] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -34,14 +32,14 @@ const ViewSellerOrders = () => {
       }
 
       if (allOrders) {
-        setOrders(allOrders.orders);
+        setOrders(allOrders.orders || []);
       }
     };
 
     const getAllUsers = async () => {
       const allUsers = await retrieveAllUser();
       if (allUsers) {
-        setAllDelivery(allUsers.users);
+        setAllDelivery(allUsers.users || []);
       }
     };
 
@@ -50,52 +48,36 @@ const ViewSellerOrders = () => {
   }, [orderId]);
 
   const retrieveAllorders = async () => {
-    // Obtener el JWT directamente del sessionStorage
     const jwtToken = sessionStorage.getItem("jwtToken");
-
     const response = await axios.get(
-        `${API_BASE_URL}/api/order/fetch/seller-wise?sellerId=` + seller.id,
+        `${API_BASE_URL}/api/order/fetch/seller-wise?sellerId=${seller.id}`,
         {
           headers: {
             Authorization: "Bearer " + jwtToken,
           },
         }
     );
-    console.log(response.data);
     return response.data;
   };
 
   const retrieveAllUser = async () => {
-    // Obtener el token actualizado desde sessionStorage
     const jwtToken = sessionStorage.getItem("jwtToken");
-
     const response = await axios.get(
-        `${API_BASE_URL}/api/user/fetch/seller/delivery-person?sellerId=` +
-        seller.id,
+        `${API_BASE_URL}/api/user/fetch/seller/delivery-person?sellerId=${seller.id}`,
         {
           headers: {
             Authorization: "Bearer " + jwtToken,
           },
         }
     );
-    console.log(response.data);
     return response.data;
   };
-
 
   const retrieveOrdersById = async () => {
     const response = await axios.get(
-      `${API_BASE_URL}/api/order/fetch?orderId=` + orderId
+        `${API_BASE_URL}/api/order/fetch?orderId=${orderId}`
     );
-    console.log(response.data);
     return response.data;
-  };
-
-  const formatDateFromEpoch = (epochTime) => {
-    const date = new Date(Number(epochTime));
-    const formattedDate = date.toLocaleString(); // Adjust the format as needed
-
-    return formattedDate;
   };
 
   const searchOrderById = (e) => {
@@ -103,13 +85,22 @@ const ViewSellerOrders = () => {
     setOrderId(tempOrderId);
   };
 
-  const assignDelivery = (orderId, e) => {
+  const assignDelivery = (orderId) => {
     setAssignOrderId(orderId);
     handleShow();
   };
 
-  const assignToDelivery = (orderId, e) => {
-    let data = { orderId: assignOrderId, deliveryId: deliveryPersonId };
+  const assignToDelivery = (e) => {
+    e.preventDefault();
+    if (!deliveryPersonId) {
+      toast.error("Seleccione un repartidor", { position: "top-center" });
+      return;
+    }
+
+    let data = {
+      orderId: assignOrderId,
+      deliveryId: parseInt(deliveryPersonId, 10),
+    };
 
     fetch(`${API_BASE_URL}/api/order/assign/delivery-person`, {
       method: "PUT",
@@ -120,299 +111,254 @@ const ViewSellerOrders = () => {
       },
       body: JSON.stringify(data),
     })
-      .then((result) => {
-        result.json().then((res) => {
-          if (res.success) {
-            toast.success(res.responseMessage, {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setOrders(res.orders);
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 2000); // Redirect after 3 seconds
-          } else if (!res.success) {
-            toast.error(res.responseMessage, {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 2000); // Redirect after 3 seconds
-          } else {
-            toast.error("Error en el servidor", {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 2000); // Redirect after 3 seconds
-          }
+        .then((result) => {
+          result.json().then((res) => {
+            if (res.success) {
+              toast.success(res.responseMessage, {
+                position: "top-center",
+                autoClose: 1000,
+              });
+              handleClose();
+              setTimeout(() => {
+                window.location.reload(true);
+              }, 1000);
+            } else {
+              toast.error(res.responseMessage, {
+                position: "top-center",
+                autoClose: 1000,
+              });
+            }
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error("Error en el servidor", { position: "top-center", autoClose: 1000 });
         });
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("Error en el servidor", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 1000); // Redirect after 3 seconds
-      });
+  };
+
+  const renderStatusBadge = (status) => {
+    const styles = {
+      Delivered: "bg-success-subtle text-success",
+      Processing: "bg-warning-subtle text-warning-emphasis",
+      "On the Way": "bg-primary-subtle text-primary",
+      Cancelled: "bg-danger-subtle text-danger",
+    };
+
+    return (
+        <span
+            className={`badge rounded-pill fw-semibold px-3 py-1 border-0 ${
+                styles[status] || "bg-secondary-subtle text-secondary"
+            }`}
+            style={{ fontSize: "0.75rem" }}
+        >
+        {status || "Pending"}
+      </span>
+    );
   };
 
   return (
-    <div className="mt-3">
-      <div
-        className="card form-card ms-2 me-2 mb-5 custom-bg shadow-lg"
-        style={{
-          height: "40rem",
-        }}
-      >
-        <div
-          className="card-header custom-bg-text text-center bg-color"
-          style={{
-            borderRadius: "1em",
-            height: "50px",
-          }}
-        >
-          <h2>Ventas</h2>
-        </div>
-        <div
-          className="card-body"
-          style={{
-            overflowY: "auto",
-          }}
-        >
-          <form class="row g-3">
-            <div class="col-auto">
-              <input
-                type="text"
-                class="form-control"
-                id="inputPassword2"
-                placeholder="Ingrese ID de Orden..."
-                onChange={(e) => setTempOrderId(e.target.value)}
-                value={tempOrderId}
-              />
-            </div>
-            <div class="col-auto">
-              <button
-                type="submit"
-                class="btn bg-color custom-bg-text mb-3"
-                onClick={searchOrderById}
-              >
+      <div className="container-fluid py-4 px-4 bg-light" style={{ minHeight: "100vh" }}>
+        <div className="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+
+          {/* Header con título y buscador por ID */}
+          <div className="card-header bg-white border-bottom py-3 px-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <h4 className="m-0 fw-bold text-dark fs-5">Ventas y Pedidos</h4>
+
+            <form className="d-flex align-items-center gap-2" onSubmit={searchOrderById}>
+              <div className="input-group input-group-sm" style={{ width: "240px" }}>
+              <span className="input-group-text bg-white border-end-0 border-light-subtle text-muted">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+              </span>
+                <input
+                    type="text"
+                    className="form-control border-start-0 border-light-subtle shadow-none"
+                    placeholder="Buscar por ID de Orden..."
+                    onChange={(e) => setTempOrderId(e.target.value)}
+                    value={tempOrderId}
+                />
+              </div>
+              <button type="submit" className="btn btn-sm btn-dark px-3">
                 Buscar
               </button>
-            </div>
-          </form>
-
-          <div className="table-responsive">
-            <table className="table table-hover text-color text-center">
-              <thead className="table-bordered border-color bg-color custom-bg-text">
-                <tr>
-                  <th scope="col">ID de Orden</th>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Nombre de Producto</th>
-                  <th scope="col">Categoría</th>
-                  <th scope="col">Vendedor</th>
-                  <th scope="col">Precio de Venta</th>
-                  <th scope="col">Precio Ganador</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Cliente</th>
-
-                  <th scope="col">Estado de Orden</th>
-                  <th scope="col">Repartidor</th>
-                  <th scope="col">Contacto de Repartidor</th>
-                  <th scope="col">Horda de Entrega</th>
-                  <th scope="col">Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order) => {
-                  return (
-                    <tr>
-                      <td>
-                        <b>{order.orderId}</b>
-                      </td>
-                      <td>
-                        <img
-                          src={
-                            `${API_BASE_URL}/api/product/` +
-                            order.product.image1
-                          }
-                          class="img-fluid"
-                          alt="product_pic"
-                          style={{
-                            maxWidth: "90px",
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <b>{order.product.name}</b>
-                      </td>
-                      <td>
-                        <b>{order.product.category.name}</b>
-                      </td>
-                      <td>
-                        <b>{order.product.seller.firstName}</b>
-                      </td>
-                      <td>
-                        <b>{order.product.price}</b>
-                      </td>
-                      <td>
-                        <b>{order.productOffer.amount}</b>
-                      </td>
-                      <td>
-                        <b>{order.quantity}</b>
-                      </td>
-                      <td>
-                        <b>{order.user.firstName}</b>
-                      </td>
-
-                      <td>
-                        <b>{order.status}</b>
-                      </td>
-                      <td>
-                        {(() => {
-                          if (order.deliveryPerson) {
-                            return <b>{order.deliveryPerson.firstName}</b>;
-                          } else {
-                            return <b className="text-danger">Pending</b>;
-                          }
-                        })()}
-                      </td>
-                      <td>
-                        {(() => {
-                          if (order.deliveryPerson) {
-                            return <b>{order.deliveryPerson.phoneNo}</b>;
-                          } else {
-                            return <b className="text-danger">Pending</b>;
-                          }
-                        })()}
-                      </td>
-                      <td>
-                        {(() => {
-                          if (order.deliveryDate) {
-                            return (
-                              <b>
-                                {order.deliveryDate + " " + order.deliveryTime}
-                              </b>
-                            );
-                          } else {
-                            return <b className="text-danger">Processing</b>;
-                          }
-                        })()}
-                      </td>
-                      <td>
-                        {(() => {
-                          if (order.deliveryPerson) {
-                            return <b>Delivery Assigned</b>;
-                          } else {
-                            return (
-                              <button
-                                className="btn btn-sm bg-color custom-bg-text ms-2"
-                                variant="primary"
-                                onClick={() => assignDelivery(order.orderId)}
-                              >
-                                Assign Delivery
-                              </button>
-                            );
-                          }
-                        })()}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton className="bg-color custom-bg-text">
-          <Modal.Title
-            style={{
-              borderRadius: "1em",
-            }}
-          >
-            Assign To Delivery Person
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="ms-3 mt-3 mb-3 me-3">
-            <form>
-              <div class="mb-3">
-                <label for="title" class="form-label">
-                  <b>Order Id</b>
-                </label>
-                <input type="text" class="form-control" value={assignOrderId} />
-              </div>
-
-              <div className=" mb-3">
-                <label className="form-label">
-                  <b>Delivery Person</b>
-                </label>
-
-                <select
-                  name="deliveryPersonId"
-                  onChange={(e) => setDeliveryPersonId(e.target.value)}
-                  className="form-control"
-                >
-                  <option value="">Select Delivery Person</option>
-
-                  {allDelivery.map((delivery) => {
-                    return (
-                      <option value={delivery.id}>
-                        {delivery.firstName + " " + delivery.lastName}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-
-              <div className="d-flex aligns-items-center justify-content-center mb-2">
-                <button
-                  type="submit"
-                  onClick={() => assignToDelivery(assignOrderId)}
-                  class="btn bg-color custom-bg-text"
-                >
-                  Assign
-                </button>
-              </div>
-
-              <ToastContainer />
+              {orderId && (
+                  <button
+                      type="button"
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => {
+                        setOrderId("");
+                        setTempOrderId("");
+                      }}
+                  >
+                    Limpiar
+                  </button>
+              )}
             </form>
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+
+          {/* Tabla Reducida de 7 Columnas */}
+          <div className="card-body p-0">
+            <div className="table-responsive">
+              <table className="table table-hover align-middle mb-0">
+                <thead>
+                <tr className="bg-light text-secondary text-uppercase" style={{ fontSize: "0.72rem", letterSpacing: "0.6px" }}>
+                  <th scope="col" className="ps-4 py-3 border-0 font-semibold">Orden</th>
+                  <th scope="col" className="py-3 border-0 font-semibold">Producto</th>
+                  <th scope="col" className="py-3 border-0 font-semibold">Cliente</th>
+                  <th scope="col" className="text-end py-3 border-0 font-semibold">Monto</th>
+                  <th scope="col" className="text-center py-3 border-0 font-semibold">Estado</th>
+                  <th scope="col" className="py-3 border-0 font-semibold">Repartidor / Entrega</th>
+                  <th scope="col" className="text-end pe-4 py-3 border-0 font-semibold">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {orders.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" className="text-center text-muted py-5">
+                        No se encontraron registros de ventas.
+                      </td>
+                    </tr>
+                ) : (
+                    orders.map((order) => (
+                        <tr key={order.orderId} className="border-bottom border-light-subtle">
+
+                          {/* ID de Orden */}
+                          <td className="ps-4 py-3 font-monospace fw-bold text-dark" style={{ fontSize: "0.85rem" }}>
+                            #{order.orderId}
+                          </td>
+
+                          {/* Media Object (Imagen + Nombre + Categoría) */}
+                          <td className="py-3">
+                            <div className="d-flex align-items-center gap-3">
+                              <div
+                                  className="rounded-3 border bg-white p-1 d-flex align-items-center justify-content-center flex-shrink-0"
+                                  style={{ width: "44px", height: "44px" }}
+                              >
+                                <img
+                                    src={`${API_BASE_URL}/api/product/` + order.product?.image1}
+                                    alt={order.product?.name}
+                                    className="w-100 h-100 object-fit-contain"
+                                />
+                              </div>
+                              <div>
+                                <div className="fw-medium text-dark" style={{ fontSize: "0.875rem" }}>
+                                  {order.product?.name}
+                                </div>
+                                <div className="text-muted small">
+                                  Cant: <span className="fw-semibold text-dark">{order.quantity}</span> • {order.product?.category?.name}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* Cliente */}
+                          <td className="py-3">
+                            <div className="fw-medium text-dark" style={{ fontSize: "0.875rem" }}>
+                              {order.user?.firstName} {order.user?.lastName || ""}
+                            </div>
+                            <div className="text-muted small">{order.user?.emailId || ""}</div>
+                          </td>
+
+                          {/* Monto Final */}
+                          <td className="py-3 text-end font-monospace fw-bold text-dark" style={{ fontSize: "0.875rem" }}>
+                            Q{(order.productOffer?.amount || order.product?.price || 0).toLocaleString()}
+                          </td>
+
+                          {/* Estado */}
+                          <td className="py-3 text-center">
+                            {renderStatusBadge(order.status)}
+                          </td>
+
+                          {/* Repartidor + Fecha / Horario */}
+                          <td className="py-3">
+                            {order.deliveryPerson ? (
+                                <div>
+                                  <div className="fw-medium text-dark" style={{ fontSize: "0.85rem" }}>
+                                    {order.deliveryPerson.firstName} {order.deliveryPerson.lastName || ""}
+                                  </div>
+                                  <div className="text-muted small">
+                                    {order.deliveryPerson.phoneNo}
+                                  </div>
+                                  {order.deliveryDate && (
+                                      <div className="text-secondary small mt-1" style={{ fontSize: "0.75rem" }}>
+                                        🕒 {order.deliveryDate} {order.deliveryTime || ""}
+                                      </div>
+                                  )}
+                                </div>
+                            ) : (
+                                <span className="text-muted small fst-italic">Sin repartidor</span>
+                            )}
+                          </td>
+
+                          {/* Acciones */}
+                          <td className="py-3 text-end pe-4">
+                            {!order.deliveryPerson ? (
+                                <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-primary fw-medium"
+                                    onClick={() => assignDelivery(order.orderId)}
+                                    style={{ fontSize: "0.8rem" }}
+                                >
+                                  Asignar Repartidor
+                                </button>
+                            ) : (
+                                <span className="badge bg-light text-secondary border font-weight-normal px-2 py-1">
+                            Asignado
+                          </span>
+                            )}
+                          </td>
+
+                        </tr>
+                    ))
+                )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Modal de Asignación Rediseñado */}
+        <Modal show={showModal} onHide={handleClose} centered borderless>
+          <Modal.Header closeButton className="border-bottom-0 pb-0">
+            <Modal.Title className="fs-5 fw-bold text-dark">
+              Asignar Repartidor
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="py-3">
+            <div className="mb-3">
+              <label className="form-label small text-muted fw-semibold">ID de Orden</label>
+              <input type="text" className="form-control bg-light border-0 fw-bold font-monospace" value={`#${assignOrderId}`} disabled />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label small text-muted fw-semibold">Seleccionar Repartidor</label>
+              <select
+                  name="deliveryPersonId"
+                  onChange={(e) => setDeliveryPersonId(e.target.value)}
+                  className="form-select border-light-subtle shadow-none"
+              >
+                <option value="">Seleccione un repartidor...</option>
+                {allDelivery.map((delivery) => (
+                    <option key={delivery.id} value={delivery.id}>
+                      {delivery.firstName} {delivery.lastName} ({delivery.phoneNo})
+                    </option>
+                ))}
+              </select>
+            </div>
+            <ToastContainer />
+          </Modal.Body>
+          <Modal.Footer className="border-top-0 pt-0">
+            <Button variant="light" onClick={handleClose} className="btn-sm px-3">
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={assignToDelivery} className="btn-sm px-3">
+              Confirmar Asignación
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
   );
 };
 
