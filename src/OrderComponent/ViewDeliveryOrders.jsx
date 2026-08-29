@@ -260,8 +260,9 @@ const ViewDeliveryOrders = () => {
 
                             {/* 3. Precio Total */}
                             <td className="py-3 px-3 text-end fw-bold text-dark">
-                              Q{order.productOffer?.amount || order.product?.price}
+                              Q{Number(order.productOffer?.amount || order.product?.price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </td>
+
 
                             {/* 4. Entrega */}
                             <td className="py-3 px-3">
@@ -277,14 +278,14 @@ const ViewDeliveryOrders = () => {
                               )}
                             </td>
 
-                            {/* 5. Dirección de Entrega (En lugar del teléfono del repartidor) */}
+                            {/* 5. Dirección de Entrega */}
                             <td className="py-3 px-3">
                               <div className="small text-dark fw-medium" style={{ maxWidth: "220px" }}>
-                                {order.address ? (
+                                {order.user?.address ? (
                                     <>
-                                      <div>{order.address.street}, {order.address.city}</div>
+                                      <div>{order.user.address.street}, {order.user.address.city}</div>
                                       <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-                                        {order.address.pincode}
+                                        {order.user.address.pincode}
                                       </div>
                                     </>
                                 ) : (
@@ -292,6 +293,7 @@ const ViewDeliveryOrders = () => {
                                 )}
                               </div>
                             </td>
+
 
                             {/* 6. Estado / Acción */}
                             <td className="py-3 px-4 text-center">
