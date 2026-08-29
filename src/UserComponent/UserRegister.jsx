@@ -4,6 +4,32 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
 
+// Listado oficial de los 22 departamentos de Guatemala
+const departamentosGuatemala = [
+  "Alta Verapaz",
+  "Baja Verapaz",
+  "Chimaltenango",
+  "Chiquimula",
+  "El Progreso",
+  "Escuintla",
+  "Guatemala",
+  "Huehuetenango",
+  "Izabal",
+  "Jalapa",
+  "Jutiapa",
+  "Petén",
+  "Quetzaltenango",
+  "Quiché",
+  "Retalhuleu",
+  "Sacatepéquez",
+  "San Marcos",
+  "Santa Rosa",
+  "Sololá",
+  "Suchitepéquez",
+  "Totonicapán",
+  "Zacapa"
+];
+
 const UserRegister = () => {
   const navigate = useNavigate();
 
@@ -33,11 +59,46 @@ const UserRegister = () => {
   }, []);
 
   const handleUserInput = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    let { name, value } = e.target;
+
+    // Si es el campo de teléfono, filtramos para permitir solo números y un máximo de 8 dígitos
+    if (name === "phoneNo") {
+      value = value.replace(/\D/g, "").slice(0, 8);
+    }
+
+    setUser({ ...user, [name]: value });
   };
 
   const saveUser = (e) => {
     e.preventDefault();
+
+    // 1. Validación estricta de correo electrónico con RegEx
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(user.emailId)) {
+      toast.warning("Por favor, ingresa un correo electrónico válido.", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      return;
+    }
+
+    // 2. Validación estricta de teléfono (exactamente 8 dígitos)
+    if (user.phoneNo.length !== 8) {
+      toast.warning("El número de teléfono debe tener exactamente 8 dígitos.", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      return;
+    }
+
+    // 3. Validación de contraseña (mínimo 6 caracteres)
+    if (user.password.length < 6) {
+      toast.warning("La contraseña debe tener al menos 6 caracteres.", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      return;
+    }
 
     if (user.role === "Delivery" && seller) {
       user.sellerId = seller.id;
@@ -154,7 +215,7 @@ const UserRegister = () => {
                   />
                 </div>
 
-                {/* Fila 2: Correo electrónico | Teléfono (Tipo tel sin flechas) */}
+                {/* Fila 2: Correo electrónico | Teléfono */}
                 <div className="col-md-6 text-dark">
                   <label htmlFor="emailId" className="form-label small fw-bold text-secondary">
                     CORREO ELECTRÓNICO
@@ -173,14 +234,16 @@ const UserRegister = () => {
 
                 <div className="col-md-6 text-dark">
                   <label htmlFor="phoneNo" className="form-label small fw-bold text-secondary">
-                    NÚMERO DE TELÉFONO
+                    NÚMERO DE TELÉFONO (8 dígitos)
                   </label>
                   <input
-                      type="tel"
+                      type="text"
+                      inputMode="numeric"
                       className="form-control shadow-none"
                       id="phoneNo"
                       name="phoneNo"
-                      placeholder="+502 0000-0000"
+                      placeholder="Ej. 5123-4567"
+                      maxLength="8"
                       onChange={handleUserInput}
                       value={user.phoneNo}
                       required
@@ -192,39 +255,46 @@ const UserRegister = () => {
                   <label htmlFor="city" className="form-label small fw-bold text-secondary">
                     DEPARTAMENTO
                   </label>
-                  <input
-                      type="text"
-                      className="form-control shadow-none"
+                  <select
+                      className="form-select shadow-none"
                       id="city"
                       name="city"
-                      placeholder="Ej. Guatemala"
                       onChange={handleUserInput}
                       value={user.city}
                       required
-                  />
+                  >
+                    <option value="" disabled>
+                      Selecciona un departamento...
+                    </option>
+                    {departamentosGuatemala.map((dept, index) => (
+                        <option key={index} value={dept}>
+                          {dept}
+                        </option>
+                    ))}
+                  </select>
                 </div>
 
-                {/* Fila 4: Dirección (Abarcando ancho completo) */}
+                {/* Fila 4: Dirección */}
                 <div className="col-12 text-dark">
                   <label htmlFor="street" className="form-label small fw-bold text-secondary">
-                    DIRECCIÓN
+                    DIRECCIÓN (Municipio, Zona, Calle y No. de Casa)
                   </label>
                   <textarea
                       className="form-control shadow-none"
                       id="street"
                       name="street"
                       rows="2"
-                      placeholder="Ej. 10 calle 4-50 zona 10"
+                      placeholder="Ej. Mixco, Zona 4, 10 calle 4-50"
                       onChange={handleUserInput}
                       value={user.street}
                       required
                   />
                 </div>
 
-                {/* Fila 5: Contraseña Aislada con botón ver/ocultar */}
+                {/* Fila 5: Contraseña Aislada con botón ver/ocultar y validación */}
                 <div className="col-12 text-dark">
                   <label htmlFor="password" className="form-label small fw-bold text-secondary">
-                    CONTRASEÑA
+                    CONTRASEÑA (Mínimo 6 caracteres)
                   </label>
                   <div className="input-group">
                     <input
@@ -233,6 +303,7 @@ const UserRegister = () => {
                         id="password"
                         name="password"
                         placeholder="Mínimo 6 caracteres"
+                        minLength="6"
                         onChange={handleUserInput}
                         value={user.password}
                         required

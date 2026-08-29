@@ -105,7 +105,7 @@ const HeaderUser = () => {
                     {/* Opciones Personales */}
                     <li>
                         <Link to="/customer/wallet" className="dropdown-item rounded-2 py-2 d-flex align-items-center gap-2">
-                            <span>💳</span> Billetera
+                            <span>💳</span> Métodos de Pago
                         </Link>
                     </li>
                     <li>
