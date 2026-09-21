@@ -36,6 +36,10 @@ const ViewSellerProducts = () => {
 
   const deleteProduct = (productId, e) => {
     e.preventDefault();
+
+    // Agrega esta línea para recuperar el token correctamente
+    const seller_jwtToken = sessionStorage.getItem("jwtToken");
+
     fetch(
         `${API_BASE_URL}/api/product/delete?productId=${productId}&sellerId=${seller.id}`,
         {
@@ -47,6 +51,8 @@ const ViewSellerProducts = () => {
           },
         }
     )
+        // ... resto de tu código
+
         .then((result) => {
           result.json().then((res) => {
             if (res.success) {

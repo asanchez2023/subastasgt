@@ -7,7 +7,7 @@ const AddCategoryForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const admin_jwtToken = sessionStorage.getItem("admin-jwtToken");
+  const admin_jwtToken = sessionStorage.getItem("jwtToken") || sessionStorage.getItem("admin-jwtToken");
 
   let navigate = useNavigate();
 
